@@ -37,7 +37,8 @@ class CommandRoom(Command):
     @with_gitlab_session
     async def default_repo(self, evt: MessageEvent, repo: str, gl: Gl) -> None:
         power_levels = await self.bot.client.get_state_event(evt.room_id, EventType.ROOM_POWER_LEVELS)
-        if power_levels.get_user_level(evt.sender) < power_levels.state_default:
+        create_evt = await self.bot.client.get_state_event(evt.room_id, EventType.ROOM_CREATE, format="event")
+        if power_levels.get_user_level(evt.sender, create_evt) < power_levels.state_default:
             await evt.reply("You don't have the permission to change the default repo of this room")
             return
 
