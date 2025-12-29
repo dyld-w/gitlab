@@ -1,0 +1,11 @@
+[project]
+name = "maubot-gitlab"
+version = "0.1.0"
+description = "Gitlab maubot plugin"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "maubot>=0.6.0",
+    "python-gitlab>=7.1.0",
+    "sqlalchemy>=2.0.45",
+]
