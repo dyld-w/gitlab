@@ -31,9 +31,15 @@ class GitlabBot(Plugin):
     commands: GitlabCommands
 
     async def start(self) -> None:
+        self.log.critical("=== GitLab Bot Starting - CRITICAL LOG TEST ===")
+        self.log.error("=== GitLab Bot Starting - ERROR LOG TEST ===")
+        self.log.warning("=== GitLab Bot Starting - WARNING LOG TEST ===")
+        self.log.info("=== GitLab Bot Starting - INFO LOG TEST ===")
+        self.log.debug("=== GitLab Bot Starting - DEBUG LOG TEST ===")
+        self.log.trace("=== GitLab Bot Starting - TRACE LOG TEST ===")
         self.config.load_and_update()
 
-        self.db = Database(self.database)
+        self.db = Database(self.database, self.log.getChild("db"))
         self.webhook = await GitlabWebhook(self).start()
         self.commands = GitlabCommands(self)
 

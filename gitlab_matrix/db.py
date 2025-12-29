@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from typing import List, NamedTuple, Optional
-import logging as log
+from logging import Logger
 
 from sqlalchemy import Column, String, Text, ForeignKeyConstraint, or_, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship, Session
@@ -89,9 +89,11 @@ class WebhookToken(Base):
 
 class Database:
     db: Engine
+    log: Logger
 
-    def __init__(self, db: Engine) -> None:
+    def __init__(self, db: Engine, log: Logger) -> None:
         self.db = db
+        self.log = log
         Base.metadata.create_all(db)
         self.Session = sessionmaker(bind=self.db)
 
@@ -137,8 +139,8 @@ class Database:
         except NoResultFound:
             s.add(default)
         except MultipleResultsFound as e:
-            log.warning("Multiple default servers found.")
-            log.warning(e)
+            self.log.warning("Multiple default servers found.")
+            self.log.warning(e)
             raise e
         s.commit()
 
