@@ -10,9 +10,6 @@
     {{ issue_link(issue, important=false) }}
 {% elif merge_request and object_attributes.noteable_type == NoteableType.MERGE_REQUEST %}
     {{ merge_request_link(merge_request, important=false) }}
-    {% if merge_request.assignee %}
-        <br/>Assignee: {{ user_link(merge_request.assignee) }}
-    {% endif %}
 {% else %}
     {# unsupported comment target #}
     {% do abort() %}
