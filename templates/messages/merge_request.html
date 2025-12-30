@@ -1,14 +1,19 @@
 {{ templates.repo_sender_prefix }}
 {% if action == OPEN %}
     opened {{ merge_request_link(object_attributes) }}
-    {% if reviewers %}
-        <br/>Reviewers: {{ util.join_human_list(reviewers, mutate=user_link) }}
-    {% endif %}
+{% else %}
+    {{ object_attributes.action.past_tense }}
+    {{ merge_request_link(object_attributes) }}
+{% endif %}
+{% if assignees %}
+    <br/>Assignees: {{ util.join_human_list(assignees, mutate=user_link) }}
+{% endif %}
+{% if reviewers %}
+    <br/>Reviewers: {{ util.join_human_list(reviewers, mutate=user_link) }}
+{% endif %}
+{% if action == OPEN %}
     {% if object_attributes.description %}
         <blockquote>{{ object_attributes.description|markdown }}</blockquote>
     {% endif %}
     {{ fancy_labels(labels) }}
-{% else %}
-    {{ object_attributes.action.past_tense }}
-    {{ merge_request_link(object_attributes) }}
 {% endif %}
