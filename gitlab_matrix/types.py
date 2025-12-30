@@ -770,7 +770,11 @@ class GitlabCommentEvent(SerializableAttrs, GitlabEvent):
     snippet: Optional[GitlabSnippet] = None
 
     def preprocess(self) -> List['GitlabCommentEvent']:
-        self.user.web_url = f"{self.project.gitlab_base_url}/{self.user.username}"
+        users_to_mutate = [self.user]
+        if self.merge_request and self.merge_request.assignee:
+            users_to_mutate.append(self.merge_request.assignee)
+        for user in users_to_mutate:
+            user.web_url = f"{self.project.gitlab_base_url}/{user.username}"
         return [self]
 
     @property
