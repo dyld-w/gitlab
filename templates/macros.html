@@ -73,3 +73,6 @@
 {%- macro assignee_changes(added, removed) -%}
     {{ list_changes(added, removed, "assigned", "unassigned", user_link) }}
 {%- endmacro -%}
+{%- macro reviewer_changes(added, removed) -%}
+    {{ list_changes(added, removed, "requested review from", "removed review request from", user_link) }}
+{%- endmacro -%}
