@@ -1,8 +1,8 @@
 {{ templates.repo_sender_prefix }}
 {% if action == OPEN %}
     opened {{ merge_request_link(object_attributes) }}
-    {% if object_attributes.reviewers %}
-        <br/>Reviewers: {{ util.join_human_list(object_attributes.reviewers, mutate=user_link) }}
+    {% if reviewers %}
+        <br/>Reviewers: {{ util.join_human_list(reviewers, mutate=user_link) }}
     {% endif %}
     {% if object_attributes.description %}
         <blockquote>{{ object_attributes.description|markdown }}</blockquote>

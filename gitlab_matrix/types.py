@@ -787,6 +787,8 @@ class GitlabMergeRequestEvent(SerializableAttrs, GitlabEvent):
     object_attributes: GitlabMergeRequestAttributes
     labels: List[GitlabLabel]
     changes: GitlabChanges
+    reviewers: Optional[List[GitlabUser]] = None
+    assignees: Optional[List[GitlabUser]] = None
 
     def preprocess(self) -> List['GitlabMergeRequestEvent']:
         users_to_mutate = [self.user]
@@ -796,8 +798,10 @@ class GitlabMergeRequestEvent(SerializableAttrs, GitlabEvent):
         if self.changes and self.changes.reviewers:
             users_to_mutate += self.changes.reviewers.previous
             users_to_mutate += self.changes.reviewers.current
-        if self.object_attributes.reviewers:
-            users_to_mutate += self.object_attributes.reviewers
+        if self.reviewers:
+            users_to_mutate += self.reviewers
+        if self.assignees:
+            users_to_mutate += self.assignees
         for user in users_to_mutate:
             user.web_url = f"{self.project.gitlab_base_url}/{user.username}"
 
