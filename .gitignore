@@ -1,5 +1,8 @@
 .venv
 
+# Ignore packaged plugins
+*.mbp
+
 tokens.json
 config.json
 
