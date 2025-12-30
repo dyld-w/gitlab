@@ -33,6 +33,8 @@ class GitlabBot(Plugin):
     async def start(self) -> None:
         self.config.load_and_update()
 
+        self.log.info("TEST TEST TEST")
+
         self.db = Database(self.database)
         self.webhook = await GitlabWebhook(self).start()
         self.commands = GitlabCommands(self)
