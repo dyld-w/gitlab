@@ -3,7 +3,7 @@ id: xyz.maubot.gitlab-testing
 version: 0.2.2
 license: AGPL-3.0-or-later
 modules:
-- gitlab_matrix
+- gitlab_matrix_testing
 main_class: GitlabBot
 
 extra_files:
