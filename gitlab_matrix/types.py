@@ -253,6 +253,12 @@ class GitlabAssigneeChanges(GitlabChangeWrapper, SerializableAttrs):
 
 
 @dataclass
+class GitlabReviewerChanges(GitlabChangeWrapper, SerializableAttrs):
+    previous: List[GitlabUser]
+    current: List[GitlabUser]
+
+
+@dataclass
 class GitlabLabelChanges(GitlabChangeWrapper, SerializableAttrs):
     previous: List[GitlabLabel]
     current: List[GitlabLabel]
@@ -290,6 +296,7 @@ class GitlabChanges(SerializableAttrs):
     title: Optional[GitlabStringChange] = None
     labels: Optional[GitlabLabelChanges] = None
     assignees: Optional[GitlabAssigneeChanges] = None
+    reviewers: Optional[GitlabReviewerChanges] = None
     time_estimate: Optional[GitlabIntChange] = None
     total_time_spent: Optional[GitlabIntChange] = None
     weight: Optional[GitlabIntChange] = None
@@ -464,6 +471,8 @@ class GitlabMergeRequestAttributes(SerializableAttrs):
     assignee_id: Optional[int] = None
     assignee_ids: Optional[List[int]] = None
     assignee: Optional[GitlabUser] = None
+    reviewer_ids: Optional[List[int]] = None
+    reviewers: Optional[List[GitlabUser]] = None
     action: Optional[Action] = None
 
 
@@ -540,6 +549,8 @@ class GitlabMergeRequest(SerializableAttrs):
     position: Optional[int] = None
     locked_at: Optional[datetime] = None
     assignee: Optional[GitlabUser] = None
+    reviewer_ids: Optional[List[int]] = None
+    reviewers: Optional[List[GitlabUser]] = None
 
 
 class BuildStatus(ExtensibleEnum):
@@ -776,12 +787,21 @@ class GitlabMergeRequestEvent(SerializableAttrs, GitlabEvent):
     object_attributes: GitlabMergeRequestAttributes
     labels: List[GitlabLabel]
     changes: GitlabChanges
+    reviewers: Optional[List[GitlabUser]] = None
+    assignees: Optional[List[GitlabUser]] = None
 
     def preprocess(self) -> List['GitlabMergeRequestEvent']:
         users_to_mutate = [self.user]
         if self.changes and self.changes.assignees:
             users_to_mutate += self.changes.assignees.previous
             users_to_mutate += self.changes.assignees.current
+        if self.changes and self.changes.reviewers:
+            users_to_mutate += self.changes.reviewers.previous
+            users_to_mutate += self.changes.reviewers.current
+        if self.reviewers:
+            users_to_mutate += self.reviewers
+        if self.assignees:
+            users_to_mutate += self.assignees
         for user in users_to_mutate:
             user.web_url = f"{self.project.gitlab_base_url}/{user.username}"
 
