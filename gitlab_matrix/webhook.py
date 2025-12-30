@@ -102,6 +102,7 @@ class GitlabWebhook:
 
         try:
             body = await request.json()
+            # self.bot.log.warning(json.dumps(body, indent=2))
         except json.JSONDecodeError:
             return Response(status=406, text="400: Bad Request\nBody is not valid JSON\n",
                             headers={"Accept": "application/json"})
