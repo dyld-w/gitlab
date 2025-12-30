@@ -1,5 +1,14 @@
 .venv
 
+# Ignore packaged plugins
+*.mbp
+
+# Generated from maubot.yaml.template
+maubot.yaml
+
+# Symlink created during dev builds
+gitlab_matrix_testing
+
 tokens.json
 config.json
 

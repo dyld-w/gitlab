@@ -1,9 +1,9 @@
-maubot: 0.3.0
-id: ddw.xyz.maubot.gitlab
-version: 0.2.1
+maubot: 0.6.0
+id: xyz.maubot.gitlab{{SUFFIX}}
+version: 0.2.2{{VERSION_SUFFIX}}
 license: AGPL-3.0-or-later
 modules:
-- gitlab_matrix
+- gitlab_matrix{{SUFFIX}}
 main_class: GitlabBot
 
 extra_files:
